@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KeyboardToMouse" GeneratedClassName="Global">
+  <Profiles />
+  <Settings>
+    <Setting Name="XOffset" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="YOffset" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-20</Value>
+    </Setting>
+    <Setting Name="ClickDistance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">125</Value>
+    </Setting>
+    <Setting Name="ClickDelay" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="RandomizeClickDelay" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RandomClickDelay" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="UseRadialTurning" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ClickMaxDistance" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
