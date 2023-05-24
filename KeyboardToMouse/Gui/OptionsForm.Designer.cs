@@ -43,10 +43,16 @@
             chkbx_RandomizeClickDelay = new CheckBox();
             txtbx_ClickDelay = new TextBox();
             label3 = new Label();
+            groupBox4 = new GroupBox();
+            label4 = new Label();
+            chkbx_ForceMovement = new CheckBox();
+            cmbx_ForceMovementKey = new ComboBox();
+            cmbx_MouseMovementKey = new ComboBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trkbr_ClickRange).BeginInit();
             groupBox3.SuspendLayout();
+            groupBox4.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -166,16 +172,16 @@
             groupBox3.Controls.Add(txtbx_ClickDelay);
             groupBox3.Controls.Add(label3);
             groupBox3.ForeColor = Color.DarkKhaki;
-            groupBox3.Location = new Point(12, 101);
+            groupBox3.Location = new Point(222, 101);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(401, 43);
+            groupBox3.Size = new Size(191, 78);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             groupBox3.Text = "Click Delay";
             // 
             // txtbx_RandomizeClickDelay
             // 
-            txtbx_RandomizeClickDelay.Location = new Point(335, 14);
+            txtbx_RandomizeClickDelay.Location = new Point(126, 43);
             txtbx_RandomizeClickDelay.Name = "txtbx_RandomizeClickDelay";
             txtbx_RandomizeClickDelay.Size = new Size(56, 23);
             txtbx_RandomizeClickDelay.TabIndex = 7;
@@ -185,19 +191,17 @@
             // chkbx_RandomizeClickDelay
             // 
             chkbx_RandomizeClickDelay.AutoSize = true;
-            chkbx_RandomizeClickDelay.Location = new Point(141, 16);
-            chkbx_RandomizeClickDelay.MaximumSize = new Size(146, 19);
-            chkbx_RandomizeClickDelay.MinimumSize = new Size(146, 19);
+            chkbx_RandomizeClickDelay.Location = new Point(6, 45);
             chkbx_RandomizeClickDelay.Name = "chkbx_RandomizeClickDelay";
-            chkbx_RandomizeClickDelay.Size = new Size(146, 19);
+            chkbx_RandomizeClickDelay.Size = new Size(117, 19);
             chkbx_RandomizeClickDelay.TabIndex = 6;
-            chkbx_RandomizeClickDelay.Text = "Randomize Click Delay";
+            chkbx_RandomizeClickDelay.Text = "Randomize Delay";
             chkbx_RandomizeClickDelay.UseVisualStyleBackColor = true;
             chkbx_RandomizeClickDelay.CheckedChanged += chkbx_RandomizeClickDelay_CheckedChanged;
             // 
             // txtbx_ClickDelay
             // 
-            txtbx_ClickDelay.Location = new Point(63, 14);
+            txtbx_ClickDelay.Location = new Point(126, 14);
             txtbx_ClickDelay.Name = "txtbx_ClickDelay";
             txtbx_ClickDelay.Size = new Size(56, 23);
             txtbx_ClickDelay.TabIndex = 5;
@@ -207,18 +211,71 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(6, 17);
+            label3.Location = new Point(6, 22);
             label3.Name = "label3";
             label3.Size = new Size(36, 15);
             label3.TabIndex = 4;
             label3.Text = "Delay";
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(label4);
+            groupBox4.Controls.Add(chkbx_ForceMovement);
+            groupBox4.Controls.Add(cmbx_ForceMovementKey);
+            groupBox4.Controls.Add(cmbx_MouseMovementKey);
+            groupBox4.ForeColor = Color.DarkKhaki;
+            groupBox4.Location = new Point(12, 101);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(204, 78);
+            groupBox4.TabIndex = 3;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Movement Keys";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(6, 22);
+            label4.Name = "label4";
+            label4.Size = new Size(65, 15);
+            label4.TabIndex = 3;
+            label4.Text = "Mouse Key";
+            // 
+            // chkbx_ForceMovement
+            // 
+            chkbx_ForceMovement.AutoSize = true;
+            chkbx_ForceMovement.Location = new Point(6, 45);
+            chkbx_ForceMovement.Name = "chkbx_ForceMovement";
+            chkbx_ForceMovement.Size = new Size(88, 19);
+            chkbx_ForceMovement.TabIndex = 2;
+            chkbx_ForceMovement.Text = "Force Move";
+            chkbx_ForceMovement.UseVisualStyleBackColor = true;
+            chkbx_ForceMovement.CheckedChanged += chkbx_ForceMovement_CheckedChanged;
+            // 
+            // cmbx_ForceMovementKey
+            // 
+            cmbx_ForceMovementKey.FormattingEnabled = true;
+            cmbx_ForceMovementKey.Location = new Point(112, 43);
+            cmbx_ForceMovementKey.Name = "cmbx_ForceMovementKey";
+            cmbx_ForceMovementKey.Size = new Size(86, 23);
+            cmbx_ForceMovementKey.TabIndex = 1;
+            cmbx_ForceMovementKey.SelectedIndexChanged += cmbx_ForceMovementKey_SelectedIndexChanged;
+            // 
+            // cmbx_MouseMovementKey
+            // 
+            cmbx_MouseMovementKey.FormattingEnabled = true;
+            cmbx_MouseMovementKey.Location = new Point(112, 14);
+            cmbx_MouseMovementKey.Name = "cmbx_MouseMovementKey";
+            cmbx_MouseMovementKey.Size = new Size(86, 23);
+            cmbx_MouseMovementKey.TabIndex = 0;
+            cmbx_MouseMovementKey.SelectedIndexChanged += cmbx_MouseMovementKey_SelectedIndexChanged;
             // 
             // OptionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 64, 64);
-            ClientSize = new Size(423, 146);
+            ClientSize = new Size(423, 191);
+            Controls.Add(groupBox4);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -239,6 +296,8 @@
             ((System.ComponentModel.ISupportInitialize)trkbr_ClickRange).EndInit();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -259,5 +318,10 @@
         private TextBox txtbx_RandomizeClickDelay;
         private CheckBox chkbx_UseRadialTurning;
         private CheckBox chkbx_ClickMaxDistance;
+        private GroupBox groupBox4;
+        private CheckBox chkbx_ForceMovement;
+        private ComboBox cmbx_ForceMovementKey;
+        private ComboBox cmbx_MouseMovementKey;
+        private Label label4;
     }
 }

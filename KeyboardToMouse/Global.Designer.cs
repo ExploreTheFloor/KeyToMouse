@@ -118,5 +118,41 @@ namespace KeyboardToMouse {
                 this["ClickMaxDistance"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MouseMovementKey {
+            get {
+                return ((string)(this["MouseMovementKey"]));
+            }
+            set {
+                this["MouseMovementKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ForceMovement {
+            get {
+                return ((bool)(this["ForceMovement"]));
+            }
+            set {
+                this["ForceMovement"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ForceMovementKey {
+            get {
+                return ((string)(this["ForceMovementKey"]));
+            }
+            set {
+                this["ForceMovementKey"] = value;
+            }
+        }
     }
 }
