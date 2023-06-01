@@ -8,7 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Keyboard;
 using static KeyboardToMouse.KBM.MouseManager;
+using static Keyboard.Messaging;
 
 namespace KeyboardToMouse.Gui
 {
@@ -26,7 +28,7 @@ namespace KeyboardToMouse.Gui
         private void PopulateGui()
         {
             cmbx_MouseMovementKey.DataSource = Enum.GetValues(typeof(MouseButton)).Cast<MouseButton>().ToList();
-            cmbx_ForceMovementKey.DataSource = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
+            cmbx_ForceMovementKey.DataSource = Enum.GetValues(typeof(VKeys)).Cast<VKeys>().ToList();
         }
         private void LoadSettings()
         {

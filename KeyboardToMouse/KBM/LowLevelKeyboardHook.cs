@@ -11,14 +11,15 @@ namespace KeyboardToMouse.KBM
 
         private LowLevelKeyboardProc _proc;
         private nint _hookID = nint.Zero;
-
+        private IntPtr _handle;
         public LowLevelKeyboardHook()
         {
             _proc = HookCallback;
         }
 
-        public void HookKeyboard()
+        public void HookKeyboard(IntPtr processToHook)
         {
+            _handle = processToHook;
             _hookID = SetHook(_proc);
         }
 
@@ -55,8 +56,7 @@ namespace KeyboardToMouse.KBM
         private nint SetHook(LowLevelKeyboardProc proc, bool global = false)
         {
             var processes = Process.GetProcesses();
-            var procs = processes.FirstOrDefault(x => x.ProcessName.Contains("slack"));
-            using (Process curProcess = Process.GetCurrentProcess())
+            var procs = processes.FirstOrDefault(x => x.MainWindowHandle == _handle);
             using (ProcessModule curModule = procs?.MainModule)
             {
                 var hook = global

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
+using Keyboard;
 using KeyboardToMouse.KBM;
 using KeyboardToMouse.Win;
+using static KeyboardToMouse.KBM.MouseManager;
 
 namespace KeyboardToMouse.Gui
 {
@@ -14,7 +16,7 @@ namespace KeyboardToMouse.Gui
         }
 
         bool _isStarted = false;
-        IntPtr _hwnd;
+        private IntPtr _hwnd;
         private Point _centerPoint = Point.Empty;
         private readonly ConcurrentDictionary<string, Keys> _keys = new();
         private Thread? _workerThread;
@@ -99,7 +101,7 @@ namespace KeyboardToMouse.Gui
                 btn_StartStop.ForeColor = Color.Red;
                 _kbh.OnKeyPressed += kbh_OnKeyPressed;
                 _kbh.OnKeyUnpressed += kbh_OnKeyUnPressed;
-                _kbh.HookKeyboard();
+                _kbh.HookKeyboard(_hwnd);
                 _workerThread = new Thread(MouseMovement);
                 _workerThread.Start();
                 return;
@@ -157,10 +159,11 @@ namespace KeyboardToMouse.Gui
 
             if (e is Keys.A or Keys.W or Keys.S or Keys.D)
             {
+                Invoke(() => _keys);
                 if (!_keys.ContainsKey(e.ToString()))
                 {
                     Invoke(() => _lastKeyPushed = e);
-                    Invoke(() => _keys.TryAdd(e.ToString(), e));
+                    _keys.TryAdd(e.ToString(), e);
                 }
             }
         }
@@ -171,7 +174,7 @@ namespace KeyboardToMouse.Gui
             try
             {
                 //Console.WriteLine($"{e} key unpressed.");
-                if (e == Keys.Escape)
+                if (e == Keys.F12)
                 {
                     _isStarted = false;
                     _workerThread?.Join();
@@ -205,13 +208,17 @@ namespace KeyboardToMouse.Gui
 
                 var windowRect = WindowManager.GetInnerWindowRectangle(_hwnd);
                 _centerPoint = windowRect.GetMiddlePoint();
+                //Get Force Move Key
+                Enum.TryParse<Messaging.VKeys>(Global.Default.ForceMovementKey, false, out var forceMoveKeyEnum);
+                var forceMoveKey = new Key(forceMoveKeyEnum);
+                if (Global.Default.ForceMovement && forceMoveKeyEnum != Messaging.VKeys.NULL)
+                    forceMoveKey.Down(_hwnd, false);
 
-                //var ctrlKey = new Key(Messaging.VKeys.KEY_Q);
-                //ctrlKey.Down(_hwnd, false);
+                Enum.TryParse(Global.Default.MouseMovementKey, false, out MouseButton forceMoveMouseKeyEnum);
 
                 //Single Keys
 
-                #region Radial Turning
+                    #region Radial Turning
 
                 if (Global.Default.UseRadialTurning)
                 {
@@ -221,7 +228,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.A:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
@@ -231,7 +238,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.S:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
@@ -243,7 +250,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -254,7 +261,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.A:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
@@ -264,7 +271,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.W:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
@@ -276,7 +283,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -287,7 +294,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.D:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
@@ -297,7 +304,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.S:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
@@ -309,7 +316,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -320,7 +327,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.D:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
@@ -330,7 +337,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.W:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
@@ -342,7 +349,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -353,7 +360,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.A:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.XOffset,
@@ -363,7 +370,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.D:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.XOffset,
@@ -375,7 +382,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -386,7 +393,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.A:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.XOffset,
@@ -396,7 +403,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.D:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.XOffset,
@@ -408,7 +415,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -419,7 +426,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.W:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
@@ -429,7 +436,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.S:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
@@ -441,7 +448,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -452,7 +459,7 @@ namespace KeyboardToMouse.Gui
                         {
                             case Keys.W:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
@@ -462,7 +469,7 @@ namespace KeyboardToMouse.Gui
                                 break;
                             case Keys.S:
                                 MouseManager.LinearSmoothClick(_hwnd,
-                                    MouseManager.MouseButton.Left,
+                                    forceMoveMouseKeyEnum,
                                     new Point(_centerPoint.X + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
@@ -474,7 +481,7 @@ namespace KeyboardToMouse.Gui
                                 MouseManager.ClickAtPosition(_hwnd,
                                     new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                                         _centerPoint.Y + Global.Default.YOffset),
-                                    MouseManager.MouseButton.Left);
+                                    forceMoveMouseKeyEnum);
                                 break;
                         }
                     }
@@ -500,7 +507,7 @@ namespace KeyboardToMouse.Gui
                                 _centerPoint.X - windowRect.Width/2 + 10,
                                 _centerPoint.Y + windowRect.Height/2 - 10
                                 ),
-                            MouseManager.MouseButton.Left);
+                            forceMoveMouseKeyEnum);
                         continue;
                     }
 
@@ -511,7 +518,7 @@ namespace KeyboardToMouse.Gui
                                 _centerPoint.X - windowRect.Width / 2 + 10,
                                 _centerPoint.Y - windowRect.Height / 2 + 10
                             ),
-                            MouseManager.MouseButton.Left);
+                            forceMoveMouseKeyEnum);
                         continue;
                     }
 
@@ -522,7 +529,7 @@ namespace KeyboardToMouse.Gui
                                 _centerPoint.X + windowRect.Width / 2 - 10,
                                 _centerPoint.Y + windowRect.Height / 2 - 10
                             ),
-                            MouseManager.MouseButton.Left);
+                            forceMoveMouseKeyEnum);
                         continue;
                     }
 
@@ -533,7 +540,7 @@ namespace KeyboardToMouse.Gui
                                 _centerPoint.X + windowRect.Width / 2 - 10,
                                 _centerPoint.Y - windowRect.Height / 2 + 10
                             ),
-                            MouseManager.MouseButton.Left);
+                            forceMoveMouseKeyEnum);
                         continue;
                     }
 
@@ -543,7 +550,7 @@ namespace KeyboardToMouse.Gui
                         MouseManager.ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X + Global.Default.XOffset,
                                 _centerPoint.Y - windowRect.Height / 2 + 10),
-                            MouseManager.MouseButton.Left);
+                            forceMoveMouseKeyEnum);
                         continue;
                     }
 
@@ -552,7 +559,7 @@ namespace KeyboardToMouse.Gui
                         MouseManager.ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X + Global.Default.XOffset,
                                 _centerPoint.Y + windowRect.Height / 2 + 10),
-                            MouseManager.MouseButton.Left);
+                            forceMoveMouseKeyEnum);
                         continue;
                     }
 
@@ -560,7 +567,7 @@ namespace KeyboardToMouse.Gui
                     {
                         MouseManager.ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X + windowRect.Width / 2 - 10,
-                                _centerPoint.Y + Global.Default.YOffset), MouseManager.MouseButton.Left);
+                                _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                         continue;
                     }
 
@@ -568,7 +575,7 @@ namespace KeyboardToMouse.Gui
                     {
                         MouseManager.ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X - windowRect.Width / 2 - 10,
-                                _centerPoint.Y + Global.Default.YOffset), MouseManager.MouseButton.Left);
+                                _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                         continue;
                     }
                 }
@@ -582,7 +589,7 @@ namespace KeyboardToMouse.Gui
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                        MouseManager.MouseButton.Left);
+                        forceMoveMouseKeyEnum);
                     continue;
                 }
 
@@ -591,7 +598,7 @@ namespace KeyboardToMouse.Gui
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                        MouseManager.MouseButton.Left);
+                        forceMoveMouseKeyEnum);
                     continue;
                 }
 
@@ -600,7 +607,7 @@ namespace KeyboardToMouse.Gui
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                        MouseManager.MouseButton.Left);
+                        forceMoveMouseKeyEnum);
                     continue;
                 }
 
@@ -609,7 +616,7 @@ namespace KeyboardToMouse.Gui
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                        MouseManager.MouseButton.Left);
+                        forceMoveMouseKeyEnum);
                     continue;
                 }
 
@@ -619,7 +626,7 @@ namespace KeyboardToMouse.Gui
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.XOffset,
                             _centerPoint.Y - Global.Default.ClickDistance),
-                        MouseManager.MouseButton.Left);
+                        forceMoveMouseKeyEnum);
                     continue;
                 }
 
@@ -628,7 +635,7 @@ namespace KeyboardToMouse.Gui
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.XOffset,
                             _centerPoint.Y + Global.Default.ClickDistance),
-                        MouseManager.MouseButton.Left);
+                        forceMoveMouseKeyEnum);
                     continue;
                 }
 
@@ -636,7 +643,7 @@ namespace KeyboardToMouse.Gui
                 {
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.ClickDistance,
-                            _centerPoint.Y + Global.Default.YOffset), MouseManager.MouseButton.Left);
+                            _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                     continue;
                 }
 
@@ -644,13 +651,14 @@ namespace KeyboardToMouse.Gui
                 {
                     MouseManager.ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X - Global.Default.ClickDistance,
-                            _centerPoint.Y + Global.Default.YOffset), MouseManager.MouseButton.Left);
+                            _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                     continue;
                 }
 
                 #endregion Regular Turning
 
-                //ctrlKey.Up(_hwnd, false);
+                if (Global.Default.ForceMovement && forceMoveKeyEnum != Messaging.VKeys.NULL)
+                    forceMoveKey.Up(_hwnd, false);
             }
         }
 
