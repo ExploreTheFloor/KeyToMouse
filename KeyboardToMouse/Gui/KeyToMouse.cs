@@ -12,7 +12,7 @@ namespace KeyboardToMouse.Gui
         public KeyToMouse()
         {
             InitializeComponent();
-            WindowManager.SetTopMost(this.Handle);
+            WindowManager.SetTopMost(Handle);
         }
 
         bool _isStarted = false;
@@ -90,7 +90,7 @@ namespace KeyboardToMouse.Gui
                 _centerPoint = windowRect.GetWindowMiddlePoint();
                 _hwnd = selectedProcess.MainWindowHandle;
 
-                this.Location = new Point(windowRect.X + (windowRect.Width - windowRect.X) / 2, windowRect.Y + 35);
+                Location = new Point(windowRect.X + (windowRect.Width - windowRect.X) / 2, windowRect.Y + 35);
                 FormBorderStyle = FormBorderStyle.None;
                 SetStyle(ControlStyles.SupportsTransparentBackColor, true);
                 BackColor = Color.Maroon;
@@ -192,6 +192,7 @@ namespace KeyboardToMouse.Gui
             }
         }
 
+
         public void MouseMovement()
         {
             while (_isStarted)
@@ -216,274 +217,269 @@ namespace KeyboardToMouse.Gui
 
                 Enum.TryParse(Global.Default.MouseMovementKey, false, out MouseButton forceMoveMouseKeyEnum);
 
+                //Get Movement Keys
+
+                Enum.TryParse<Keys>(Global.Default.ForwardKey, false, out var forwardKey);
+                Enum.TryParse<Keys>(Global.Default.BackwardKey, false, out var backwardKey);
+                Enum.TryParse<Keys>(Global.Default.LeftKey, false, out var leftKey);
+                Enum.TryParse<Keys>(Global.Default.RightKey, false, out var rightKey);
                 //Single Keys
 
-                    #region Radial Turning
+                #region Radial Turning
 
                 if (Global.Default.UseRadialTurning)
                 {
-                    if (_keys.ContainsKey(Keys.A.ToString()) && _keys.ContainsKey(Keys.S.ToString()))
+                    if (_keys.ContainsKey(leftKey.ToString()) && _keys.ContainsKey(backwardKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == leftKey)
                         {
-                            case Keys.A:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.S:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+                        }
+                        else if (_lastKeyPushed == backwardKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+                        }
+                        else
+                        {
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                         }
                     }
                     //A + W KEYS
-                    else if (_keys.ContainsKey(Keys.A.ToString()) && _keys.ContainsKey(Keys.W.ToString()))
+                    else if (_keys.ContainsKey(leftKey.ToString()) && _keys.ContainsKey(forwardKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == leftKey)
                         {
-                            case Keys.A:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.W:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
                         }
+                        else if (_lastKeyPushed == forwardKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+
+                        }
+                        else
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                     }
                     //D + S KEYS
-                    else if (_keys.ContainsKey(Keys.D.ToString()) && _keys.ContainsKey(Keys.S.ToString()))
+                    else if (_keys.ContainsKey(rightKey.ToString()) && _keys.ContainsKey(backwardKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == rightKey)
                         {
-                            case Keys.D:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.S:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
                         }
+                        else if (_lastKeyPushed == backwardKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+
+                        }
+                        else
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                     }
                     //D + W KEYS
-                    else if (_keys.ContainsKey(Keys.D.ToString()) && _keys.ContainsKey(Keys.W.ToString()))
+                    else if (_keys.ContainsKey(rightKey.ToString()) && _keys.ContainsKey(forwardKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == rightKey)
                         {
-                            case Keys.D:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.W:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
                         }
+                        else if (_lastKeyPushed == forwardKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+
+                        }
+                        else
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                     }
                     //W KEY
-                    else if (_keys.ContainsKey(Keys.W.ToString()))
+                    else if (_keys.ContainsKey(forwardKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == leftKey)
                         {
-                            case Keys.A:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.D:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
                         }
+                        else if (_lastKeyPushed == rightKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+                        }
+                        else
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                     }
                     //S KEY
-                    else if (_keys.ContainsKey(Keys.S.ToString()))
+                    else if (_keys.ContainsKey(backwardKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == leftKey)
                         {
-                            case Keys.A:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.D:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
                         }
+                        else if (_lastKeyPushed == rightKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+                        }
+                        else
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                     }
                     //D KEY
-                    else if (_keys.ContainsKey(Keys.D.ToString()))
+                    else if (_keys.ContainsKey(rightKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == forwardKey)
                         {
-                            case Keys.W:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.S:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
                         }
+                        else if (_lastKeyPushed == backwardKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+                        }
+                        else
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                     }
                     //A KEY
-                    else if (_keys.ContainsKey(Keys.A.ToString()))
+                    else if (_keys.ContainsKey(leftKey.ToString()))
                     {
-                        switch (_lastKeyPushed)
+                        if (_lastKeyPushed == forwardKey)
                         {
-                            case Keys.W:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            case Keys.S:
-                                MouseManager.LinearSmoothClick(_hwnd,
-                                    forceMoveMouseKeyEnum,
-                                    new Point(_centerPoint.X + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    5,
-                                    Global.Default.ClickDelay);
-                                break;
-                            default:
-                                MouseManager.ClickAtPosition(_hwnd,
-                                    new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
-                                        _centerPoint.Y + Global.Default.YOffset),
-                                    forceMoveMouseKeyEnum);
-                                break;
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
                         }
+                        else if (_lastKeyPushed == backwardKey)
+                        {
+                            LinearSmoothClick(_hwnd,
+                                forceMoveMouseKeyEnum,
+                                new Point(_centerPoint.X + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                5,
+                                Global.Default.ClickDelay);
+                        }
+                        else
+                            ClickAtPosition(_hwnd,
+                                new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
+                                    _centerPoint.Y + Global.Default.YOffset),
+                                forceMoveMouseKeyEnum);
                     }
                     else
                     {
@@ -500,20 +496,20 @@ namespace KeyboardToMouse.Gui
 
                 if (Global.Default.ClickMaxDistance)
                 {
-                    if (_keys.ContainsKey(Keys.A.ToString()) && _keys.ContainsKey(Keys.S.ToString()))
+                    if (_keys.ContainsKey(leftKey.ToString()) && _keys.ContainsKey(backwardKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(
-                                _centerPoint.X - windowRect.Width/2 + 10,
-                                _centerPoint.Y + windowRect.Height/2 - 10
+                                _centerPoint.X - windowRect.Width / 2 + 10,
+                                _centerPoint.Y + windowRect.Height / 2 - 10
                                 ),
                             forceMoveMouseKeyEnum);
                         continue;
                     }
 
-                    if (_keys.ContainsKey(Keys.A.ToString()) && _keys.ContainsKey(Keys.W.ToString()))
+                    if (_keys.ContainsKey(leftKey.ToString()) && _keys.ContainsKey(forwardKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(
                                 _centerPoint.X - windowRect.Width / 2 + 10,
                                 _centerPoint.Y - windowRect.Height / 2 + 10
@@ -522,9 +518,9 @@ namespace KeyboardToMouse.Gui
                         continue;
                     }
 
-                    if (_keys.ContainsKey(Keys.D.ToString()) && _keys.ContainsKey(Keys.S.ToString()))
+                    if (_keys.ContainsKey(rightKey.ToString()) && _keys.ContainsKey(backwardKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(
                                 _centerPoint.X + windowRect.Width / 2 - 10,
                                 _centerPoint.Y + windowRect.Height / 2 - 10
@@ -533,9 +529,9 @@ namespace KeyboardToMouse.Gui
                         continue;
                     }
 
-                    if (_keys.ContainsKey(Keys.D.ToString()) && _keys.ContainsKey(Keys.W.ToString()))
+                    if (_keys.ContainsKey(rightKey.ToString()) && _keys.ContainsKey(forwardKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(
                                 _centerPoint.X + windowRect.Width / 2 - 10,
                                 _centerPoint.Y - windowRect.Height / 2 + 10
@@ -545,35 +541,35 @@ namespace KeyboardToMouse.Gui
                     }
 
                     //Single Keys
-                    if (_keys.ContainsKey(Keys.W.ToString()))
+                    if (_keys.ContainsKey(forwardKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X + Global.Default.XOffset,
                                 _centerPoint.Y - windowRect.Height / 2 + 10),
                             forceMoveMouseKeyEnum);
                         continue;
                     }
 
-                    if (_keys.ContainsKey(Keys.S.ToString()))
+                    if (_keys.ContainsKey(backwardKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X + Global.Default.XOffset,
                                 _centerPoint.Y + windowRect.Height / 2 + 10),
                             forceMoveMouseKeyEnum);
                         continue;
                     }
 
-                    if (_keys.ContainsKey(Keys.D.ToString()))
+                    if (_keys.ContainsKey(rightKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X + windowRect.Width / 2 - 10,
                                 _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                         continue;
                     }
 
-                    if (_keys.ContainsKey(Keys.A.ToString()))
+                    if (_keys.ContainsKey(leftKey.ToString()))
                     {
-                        MouseManager.ClickAtPosition(_hwnd,
+                        ClickAtPosition(_hwnd,
                             new Point(_centerPoint.X - windowRect.Width / 2 - 10,
                                 _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                         continue;
@@ -584,36 +580,36 @@ namespace KeyboardToMouse.Gui
 
                 #region Regular Turning
 
-                if (_keys.ContainsKey(Keys.A.ToString()) && _keys.ContainsKey(Keys.S.ToString()))
+                if (_keys.ContainsKey(leftKey.ToString()) && _keys.ContainsKey(backwardKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
                         forceMoveMouseKeyEnum);
                     continue;
                 }
 
-                if (_keys.ContainsKey(Keys.A.ToString()) && _keys.ContainsKey(Keys.W.ToString()))
+                if (_keys.ContainsKey(leftKey.ToString()) && _keys.ContainsKey(forwardKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X - Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
                         forceMoveMouseKeyEnum);
                     continue;
                 }
 
-                if (_keys.ContainsKey(Keys.D.ToString()) && _keys.ContainsKey(Keys.S.ToString()))
+                if (_keys.ContainsKey(rightKey.ToString()) && _keys.ContainsKey(backwardKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y + Global.Default.ClickDistance + Global.Default.YOffset),
                         forceMoveMouseKeyEnum);
                     continue;
                 }
 
-                if (_keys.ContainsKey(Keys.D.ToString()) && _keys.ContainsKey(Keys.W.ToString()))
+                if (_keys.ContainsKey(rightKey.ToString()) && _keys.ContainsKey(forwardKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.ClickDistance + Global.Default.XOffset,
                             _centerPoint.Y - Global.Default.ClickDistance + Global.Default.YOffset),
                         forceMoveMouseKeyEnum);
@@ -621,35 +617,35 @@ namespace KeyboardToMouse.Gui
                 }
 
                 //Single Keys
-                if (_keys.ContainsKey(Keys.W.ToString()))
+                if (_keys.ContainsKey(forwardKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.XOffset,
                             _centerPoint.Y - Global.Default.ClickDistance),
                         forceMoveMouseKeyEnum);
                     continue;
                 }
 
-                if (_keys.ContainsKey(Keys.S.ToString()))
+                if (_keys.ContainsKey(backwardKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.XOffset,
                             _centerPoint.Y + Global.Default.ClickDistance),
                         forceMoveMouseKeyEnum);
                     continue;
                 }
 
-                if (_keys.ContainsKey(Keys.D.ToString()))
+                if (_keys.ContainsKey(rightKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X + Global.Default.ClickDistance,
                             _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                     continue;
                 }
 
-                if (_keys.ContainsKey(Keys.A.ToString()))
+                if (_keys.ContainsKey(leftKey.ToString()))
                 {
-                    MouseManager.ClickAtPosition(_hwnd,
+                    ClickAtPosition(_hwnd,
                         new Point(_centerPoint.X - Global.Default.ClickDistance,
                             _centerPoint.Y + Global.Default.YOffset), forceMoveMouseKeyEnum);
                     continue;

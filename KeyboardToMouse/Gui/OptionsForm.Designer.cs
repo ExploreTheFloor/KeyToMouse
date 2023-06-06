@@ -48,11 +48,21 @@
             chkbx_ForceMovement = new CheckBox();
             cmbx_ForceMovementKey = new ComboBox();
             cmbx_MouseMovementKey = new ComboBox();
+            groupBox5 = new GroupBox();
+            label7 = new Label();
+            label8 = new Label();
+            cmbx_RightKey = new ComboBox();
+            cmbx_LeftKey = new ComboBox();
+            label6 = new Label();
+            label5 = new Label();
+            cmbx_BackwardKey = new ComboBox();
+            cmbx_ForwardKey = new ComboBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trkbr_ClickRange).BeginInit();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
+            groupBox5.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -253,28 +263,117 @@
             // 
             // cmbx_ForceMovementKey
             // 
+            cmbx_ForceMovementKey.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             cmbx_ForceMovementKey.FormattingEnabled = true;
-            cmbx_ForceMovementKey.Location = new Point(112, 43);
+            cmbx_ForceMovementKey.Location = new Point(92, 43);
             cmbx_ForceMovementKey.Name = "cmbx_ForceMovementKey";
-            cmbx_ForceMovementKey.Size = new Size(86, 23);
+            cmbx_ForceMovementKey.Size = new Size(106, 21);
             cmbx_ForceMovementKey.TabIndex = 1;
-            cmbx_ForceMovementKey.SelectedIndexChanged += cmbx_ForceMovementKey_SelectedIndexChanged;
             // 
             // cmbx_MouseMovementKey
             // 
             cmbx_MouseMovementKey.FormattingEnabled = true;
-            cmbx_MouseMovementKey.Location = new Point(112, 14);
+            cmbx_MouseMovementKey.Location = new Point(92, 14);
             cmbx_MouseMovementKey.Name = "cmbx_MouseMovementKey";
-            cmbx_MouseMovementKey.Size = new Size(86, 23);
+            cmbx_MouseMovementKey.Size = new Size(106, 23);
+            cmbx_MouseMovementKey.Sorted = true;
             cmbx_MouseMovementKey.TabIndex = 0;
-            cmbx_MouseMovementKey.SelectedIndexChanged += cmbx_MouseMovementKey_SelectedIndexChanged;
+            // 
+            // groupBox5
+            // 
+            groupBox5.Controls.Add(label7);
+            groupBox5.Controls.Add(label8);
+            groupBox5.Controls.Add(cmbx_RightKey);
+            groupBox5.Controls.Add(cmbx_LeftKey);
+            groupBox5.Controls.Add(label6);
+            groupBox5.Controls.Add(label5);
+            groupBox5.Controls.Add(cmbx_BackwardKey);
+            groupBox5.Controls.Add(cmbx_ForwardKey);
+            groupBox5.ForeColor = Color.DarkKhaki;
+            groupBox5.Location = new Point(12, 185);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new Size(401, 78);
+            groupBox5.TabIndex = 4;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "Movement Keys";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(216, 47);
+            label7.Name = "label7";
+            label7.Size = new Size(35, 15);
+            label7.TabIndex = 8;
+            label7.Text = "Right";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(216, 22);
+            label8.Name = "label8";
+            label8.Size = new Size(27, 15);
+            label8.TabIndex = 7;
+            label8.Text = "Left";
+            // 
+            // cmbx_RightKey
+            // 
+            cmbx_RightKey.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            cmbx_RightKey.FormattingEnabled = true;
+            cmbx_RightKey.Location = new Point(285, 45);
+            cmbx_RightKey.Name = "cmbx_RightKey";
+            cmbx_RightKey.Size = new Size(106, 21);
+            cmbx_RightKey.TabIndex = 6;
+            // 
+            // cmbx_LeftKey
+            // 
+            cmbx_LeftKey.FormattingEnabled = true;
+            cmbx_LeftKey.Location = new Point(285, 14);
+            cmbx_LeftKey.Name = "cmbx_LeftKey";
+            cmbx_LeftKey.Size = new Size(106, 23);
+            cmbx_LeftKey.TabIndex = 5;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(6, 45);
+            label6.Name = "label6";
+            label6.Size = new Size(58, 15);
+            label6.TabIndex = 4;
+            label6.Text = "Backward";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(6, 22);
+            label5.Name = "label5";
+            label5.Size = new Size(50, 15);
+            label5.TabIndex = 3;
+            label5.Text = "Forward";
+            // 
+            // cmbx_BackwardKey
+            // 
+            cmbx_BackwardKey.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            cmbx_BackwardKey.FormattingEnabled = true;
+            cmbx_BackwardKey.Location = new Point(92, 45);
+            cmbx_BackwardKey.Name = "cmbx_BackwardKey";
+            cmbx_BackwardKey.Size = new Size(106, 21);
+            cmbx_BackwardKey.TabIndex = 1;
+            // 
+            // cmbx_ForwardKey
+            // 
+            cmbx_ForwardKey.FormattingEnabled = true;
+            cmbx_ForwardKey.Location = new Point(92, 14);
+            cmbx_ForwardKey.Name = "cmbx_ForwardKey";
+            cmbx_ForwardKey.Size = new Size(106, 23);
+            cmbx_ForwardKey.TabIndex = 0;
             // 
             // OptionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 64, 64);
-            ClientSize = new Size(423, 191);
+            ClientSize = new Size(423, 278);
+            Controls.Add(groupBox5);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
@@ -298,6 +397,8 @@
             groupBox3.PerformLayout();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -323,5 +424,14 @@
         private ComboBox cmbx_ForceMovementKey;
         private ComboBox cmbx_MouseMovementKey;
         private Label label4;
+        private GroupBox groupBox5;
+        private Label label7;
+        private Label label8;
+        private ComboBox cmbx_RightKey;
+        private ComboBox cmbx_LeftKey;
+        private Label label6;
+        private Label label5;
+        private ComboBox cmbx_BackwardKey;
+        private ComboBox cmbx_ForwardKey;
     }
 }

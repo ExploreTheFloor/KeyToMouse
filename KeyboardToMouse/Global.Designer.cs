@@ -121,7 +121,7 @@ namespace KeyboardToMouse {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Left")]
         public string MouseMovementKey {
             get {
                 return ((string)(this["MouseMovementKey"]));
@@ -145,13 +145,61 @@ namespace KeyboardToMouse {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("KEY_LCONTROL")]
         public string ForceMovementKey {
             get {
                 return ((string)(this["ForceMovementKey"]));
             }
             set {
                 this["ForceMovementKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("W")]
+        public string ForwardKey {
+            get {
+                return ((string)(this["ForwardKey"]));
+            }
+            set {
+                this["ForwardKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("S")]
+        public string BackwardKey {
+            get {
+                return ((string)(this["BackwardKey"]));
+            }
+            set {
+                this["BackwardKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A")]
+        public string LeftKey {
+            get {
+                return ((string)(this["LeftKey"]));
+            }
+            set {
+                this["LeftKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D")]
+        public string RightKey {
+            get {
+                return ((string)(this["RightKey"]));
+            }
+            set {
+                this["RightKey"] = value;
             }
         }
     }

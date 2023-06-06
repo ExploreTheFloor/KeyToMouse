@@ -27,13 +27,25 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MouseMovementKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Left</Value>
     </Setting>
     <Setting Name="ForceMovement" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ForceMovementKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">KEY_LCONTROL</Value>
+    </Setting>
+    <Setting Name="ForwardKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">W</Value>
+    </Setting>
+    <Setting Name="BackwardKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">S</Value>
+    </Setting>
+    <Setting Name="LeftKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">A</Value>
+    </Setting>
+    <Setting Name="RightKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D</Value>
     </Setting>
   </Settings>
 </SettingsFile>

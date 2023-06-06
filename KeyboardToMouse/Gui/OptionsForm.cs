@@ -20,15 +20,20 @@ namespace KeyboardToMouse.Gui
         {
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            LoadSettings();
             WindowManager.SetTopMost(this.Handle);
             PopulateGui();
+            LoadSettings();
         }
 
         private void PopulateGui()
         {
             cmbx_MouseMovementKey.DataSource = Enum.GetValues(typeof(MouseButton)).Cast<MouseButton>().ToList();
             cmbx_ForceMovementKey.DataSource = Enum.GetValues(typeof(VKeys)).Cast<VKeys>().ToList();
+            //Movement Keys
+            cmbx_ForwardKey.DataSource = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
+            cmbx_BackwardKey.DataSource = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
+            cmbx_LeftKey.DataSource = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
+            cmbx_RightKey.DataSource = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
         }
         private void LoadSettings()
         {
@@ -40,9 +45,15 @@ namespace KeyboardToMouse.Gui
             chkbx_UseRadialTurning.Checked = Global.Default.UseRadialTurning;
             chkbx_ClickMaxDistance.Checked = Global.Default.ClickMaxDistance;
             txtbx_RandomizeClickDelay.Text = Global.Default.RandomClickDelay.ToString();
-            cmbx_MouseMovementKey.SelectedText = Global.Default.MouseMovementKey;
+            //Force Movement
+            cmbx_MouseMovementKey.Text = Global.Default.MouseMovementKey;
             chkbx_ForceMovement.Checked = Global.Default.ForceMovement;
-            cmbx_ForceMovementKey.SelectedText = Global.Default.ForceMovementKey;
+            cmbx_ForceMovementKey.Text = Global.Default.ForceMovementKey;
+            //
+            cmbx_ForwardKey.Text = Global.Default.ForwardKey;
+            cmbx_BackwardKey.Text = Global.Default.BackwardKey;
+            cmbx_LeftKey.Text = Global.Default.LeftKey;
+            cmbx_RightKey.Text = Global.Default.RightKey;
         }
 
         private void SaveSettings()
@@ -55,9 +66,15 @@ namespace KeyboardToMouse.Gui
             Global.Default.UseRadialTurning = chkbx_UseRadialTurning.Checked;
             Global.Default.ClickMaxDistance = chkbx_ClickMaxDistance.Checked;
             Global.Default.RandomClickDelay = Convert.ToInt32(txtbx_RandomizeClickDelay.Text);
-            Global.Default.MouseMovementKey = cmbx_MouseMovementKey.SelectedText;
+            //Force Movement
+            Global.Default.MouseMovementKey = cmbx_MouseMovementKey.Text;
             Global.Default.ForceMovement = chkbx_ForceMovement.Checked;
-            Global.Default.ForceMovementKey = cmbx_ForceMovementKey.SelectedText;
+            Global.Default.ForceMovementKey = cmbx_ForceMovementKey.Text;
+            //
+            Global.Default.ForwardKey = cmbx_ForwardKey.Text;
+            Global.Default.BackwardKey = cmbx_BackwardKey.Text;
+            Global.Default.LeftKey = cmbx_LeftKey.Text;
+            Global.Default.RightKey = cmbx_RightKey.Text;
             Global.Default.Save();
 
         }
@@ -85,16 +102,6 @@ namespace KeyboardToMouse.Gui
         private void chkbx_UseRadialTurning_CheckedChanged(object sender, EventArgs e)
         {
             Global.Default.UseRadialTurning = chkbx_UseRadialTurning.Checked;
-        }
-
-        private void cmbx_ForceMovementKey_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Global.Default.ForceMovementKey = cmbx_ForceMovementKey.SelectedText;
-        }
-
-        private void cmbx_MouseMovementKey_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Global.Default.MouseMovementKey = cmbx_MouseMovementKey.SelectedText;
         }
 
         private void chkbx_ForceMovement_CheckedChanged(object sender, EventArgs e)

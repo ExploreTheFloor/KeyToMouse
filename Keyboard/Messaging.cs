@@ -104,8 +104,8 @@ namespace Keyboard
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		private static extern bool SendMessage(IntPtr hWnd, int wMsg, uint wParam, uint lParam);
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+		//[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		//private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[DllImport("user32.dll", SetLastError = true)]
